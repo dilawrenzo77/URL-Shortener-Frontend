@@ -41,7 +41,7 @@ export default function AuthForm({auth} : {auth: string}) {
         try {
             {auth === "login" 
                 ? loginResponse = await axios.post(`/api/backend/auth/login`,loginValues)
-                : signinResponse = await axios.post(`/api/backend/auth/signin`,signInValues);
+                : signinResponse = await axios.post(`/api/backend/auth/register`,signInValues);
             }
 
             if(loginResponse?.data.Ok){
