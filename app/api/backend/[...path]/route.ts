@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = process.env.BACKEND_URL; // e.g. https://url-shortener-backend-p5gj.onrender.com
+// const BACKEND_URL = process.env.BACKEND_URL; // e.g. https://url-shortener-backend-p5gj.onrender.com
+const BACKEND_URL = "https://url-shortener-backend-p5gj.onrender.com";
+
 
 async function handler(
   req: NextRequest,
