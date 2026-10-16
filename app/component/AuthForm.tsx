@@ -95,7 +95,7 @@ export default function AuthForm({auth} : {auth: string}) {
                 <div className="flex flex-col items-start gap-2">
                     <p className="text-black/80 text-sm font-semibold">Password:</p>
                     <input 
-                    type="text" 
+                    type="password" 
                     placeholder="* * * *" 
                     className="border-2 border-gray-600 w-full placeholder:text-xs text-black/70 px-5 py-2 rounded-lg"
                     onChange={auth === "login"
