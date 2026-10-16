@@ -1,18 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = process.env.BACKEND_URL;
+const BACKEND_URL = process.env.BACKEND_URL; // e.g. https://url-shortener-backend-p5gj.onrender.com
 
 async function handler(
   req: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
-  const path = params.path.join("/");
-  const url = `${BACKEND_URL}/${path}${req.nextUrl.search}`;
+  const { path } = await params;
+  const joined = path.join("/");
+  const url = `${BACKEND_URL}/${joined}${req.nextUrl.search}`;
 
   const headers = new Headers(req.headers);
   headers.delete("host");
   headers.delete("content-length");
-  headers.delete("origin"); // avoid backend CORS rejecting the proxy
 
   const body = ["GET", "HEAD"].includes(req.method) ? undefined : await req.text();
 
@@ -31,11 +31,4 @@ async function handler(
   });
 }
 
-export {
-  handler as GET,
-  handler as POST,
-  handler as PUT,
-  handler as DELETE,
-  handler as PATCH,
-  handler as OPTIONS,
-};
+export { handler as GET, handler as POST, handler as PUT, handler as DELETE, handler as PATCH, handler as OPTIONS };
