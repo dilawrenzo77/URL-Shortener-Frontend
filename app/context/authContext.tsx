@@ -82,54 +82,94 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = (userData: User) => setUser(userData);
 
-  const logout = async () => {
-    try {
-      const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/logout`,
-      { withCredentials: true }
-      );
+  // const logout = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //     `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/logout`,
+  //     { withCredentials: true }
+  //     );
 
-      setUser(null);  
-      router.push("/");           // client-side nav
-      router.refresh();   
-    } catch (error) {
-      console.log(error, "error login out");
-    }
-  }
+  //     setUser(null);  
+  //     router.push("/");           // client-side nav
+  //     router.refresh();   
+  //   } catch (error) {
+  //     console.log(error, "error login out");
+  //   }
+  // }
 
-
-const shortenUrl = async (url: string) => {
-  try {
-    setLoading(true);
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/url/urlShortener`,
-      { url },
-      { withCredentials: true }
-    );
-    const responseUrl = response.data.shortURL;
-    setShortUrl(responseUrl);
-  } catch (err) {
-    console.error("Failed to shorten URL:", err);
-  } finally {
-    setLoading(false);
-  }
-  };
+    const logout = async () => {
+      try {
+        await axios.get(`/api/backend/auth/logout`, { withCredentials: true });
+        setUser(null);
+        router.push("/");
+        router.refresh();
+      } catch (error) {
+        console.log(error, "error logging out");
+      }
+    };
 
 
-  const userAnalytics = async (userId: string) => {
-  try {
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/userAnalytics/${userId}`
-    );
-    const analyticsResponse = await response.data?.analytics;
-    setAnalytics(analyticsResponse);
-    return analyticsResponse;
-  } catch (err) {
-    console.error("Failed to fetch Analytics:", err);
-  }
-  };
 
 
+// const shortenUrl = async (url: string) => {
+//   try {
+//     setLoading(true);
+//     const response = await axios.post(
+//       `${process.env.NEXT_PUBLIC_SERVER_URL}/url/urlShortener`,
+//       { url },
+//       { withCredentials: true }
+//     );
+//     const responseUrl = response.data.shortURL;
+//     setShortUrl(responseUrl);
+//   } catch (err) {
+//     console.error("Failed to shorten URL:", err);
+//   } finally {
+//     setLoading(false);
+//   }
+//   };
+
+
+//   const userAnalytics = async (userId: string) => {
+//   try {
+//     const response = await axios.get(
+//       `${process.env.NEXT_PUBLIC_SERVER_URL}/userAnalytics/${userId}`
+//     );
+//     const analyticsResponse = await response.data?.analytics;
+//     setAnalytics(analyticsResponse);
+//     return analyticsResponse;
+//   } catch (err) {
+//     console.error("Failed to fetch Analytics:", err);
+//   }
+//   };
+
+    const shortenUrl = async (url: string) => {
+      try {
+        setLoading(true);
+        const response = await axios.post(
+          `/api/backend/url/urlShortener`,
+          { url },
+          { withCredentials: true }
+        );
+        setShortUrl(response.data.shortURL);
+      } catch (err) {
+        console.error("Failed to shorten URL:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const userAnalytics = async (userId: string) => {
+      try {
+        const response = await axios.get(`/api/backend/userAnalytics/${userId}`, {
+          withCredentials: true,
+        });
+        const analyticsResponse = response.data?.analytics;
+        setAnalytics(analyticsResponse);
+        return analyticsResponse;
+      } catch (err) {
+        console.error("Failed to fetch Analytics:", err);
+      }
+    };
 
   return (
     <AuthContext.Provider value={{ user, loading, login, logout, refresh, shortenUrl, shortUrl, userAnalytics, analytics, isOpen, setIsOpen }}>
